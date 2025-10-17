@@ -2,7 +2,7 @@ package se.chasacademy;
 
 import java.util.*;
 
-public class CustomerOrder {
+public class CustomerOrder implements ICustomerOrder{
 
     public void displayMenu(Scanner scanner, Map<String, List<Order>> ordersByCustomer) {
         System.out.println("");

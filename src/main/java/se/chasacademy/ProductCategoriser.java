@@ -2,7 +2,7 @@ package se.chasacademy;
 
 import java.util.*;
 
-public class ProductCategoriser {
+public class ProductCategoriser implements IProductManager{
 
     private Map<String, List<Product>> category = new HashMap<>();
 

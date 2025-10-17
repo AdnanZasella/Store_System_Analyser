@@ -8,7 +8,7 @@ import java.util.Map;
 public class PredefinedProducts {
 
 
-    public void loadPredefinedProducts(ProductCategoriser manager, Map<String, Product> productsById) {
+    public void loadPredefinedProducts(IProductManager manager, Map<String, Product> productsById) {
         Map<String, List<Product>> predefinedProducts = new HashMap<>();
 
 

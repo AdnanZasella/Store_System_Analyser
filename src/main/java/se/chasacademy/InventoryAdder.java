@@ -3,12 +3,12 @@ package se.chasacademy;
 import java.util.Map;
 import java.util.Scanner;
 
-public class InventoryAdder {
+public class InventoryAdder implements IInventoryAdder{
 
-    private ProductCategoriser productManager;
+    private IProductManager productManager;
     private Map<String, Product> productsById;
 
-    public InventoryAdder(Map<String, Product> productsById, ProductCategoriser productManager) {
+    public InventoryAdder(Map<String, Product> productsById, IProductManager productManager) {
         this.productsById = productsById;
         this.productManager = productManager; // ✅ use the one passed from main
     }
@@ -44,7 +44,10 @@ public class InventoryAdder {
         scanner.nextLine();
 
         System.out.println("What is the ID of the product?");
-        String productID = scanner.nextLine();
+        String productID = scanner.nextLine().trim();
+        if (!productID.isEmpty()) {
+            productID = productID.substring(0, 1).toUpperCase() + productID.substring(1);
+        }
 
         Product newProduct = new Product(productID, productName, productPrice);
         productManager.addProduct(type, newProduct, true);

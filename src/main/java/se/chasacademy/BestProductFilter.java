@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class BestProductFilter {
+public class BestProductFilter implements IBestProductFilter{
 
 
     public void top3Products(Map<String, List<Order>> ordersByCustomer,
