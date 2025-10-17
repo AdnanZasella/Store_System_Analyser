@@ -1,9 +1,15 @@
 package se.chasacademy;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
 public class InventoryAdder implements IInventoryAdder{
+
+    private static final Logger logger = LoggerFactory.getLogger(InventoryAdder.class);
 
     private IProductManager productManager;
     private Map<String, Product> productsById;
@@ -16,7 +22,7 @@ public class InventoryAdder implements IInventoryAdder{
 
 
     public void addProductMenu(Scanner scanner){
-
+    try {
         if (productManager.getCategories().isEmpty()) {
             System.out.println("No categories available. You can still add a product and its category will be created.");
         } else {
@@ -24,8 +30,6 @@ public class InventoryAdder implements IInventoryAdder{
                 System.out.println("Available Categories: " + category);
             }
         }
-
-
 
 
         System.out.println("");
@@ -39,9 +43,24 @@ public class InventoryAdder implements IInventoryAdder{
         System.out.println("What is the name of the product?");
         String productName = scanner.nextLine();
 
-        System.out.println("What is the price of the product? (in $)");
-        Double productPrice = scanner.nextDouble();
-        scanner.nextLine();
+
+        Double productPrice;
+        while (true) {
+            System.out.println("What is the price of the product? (in $)");
+            try {
+                productPrice = scanner.nextDouble();
+                scanner.nextLine(); // clear the newline
+                if (productPrice < 0) {
+                    System.out.println("Price cannot be negative. Try again.");
+                    continue;
+                }
+                break; // valid input, exit loop
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input! Please enter a numeric value.");
+                scanner.nextLine(); // clear invalid input
+            }
+        }
+
 
         System.out.println("What is the ID of the product?");
         String productID = scanner.nextLine().trim();
@@ -52,6 +71,14 @@ public class InventoryAdder implements IInventoryAdder{
         Product newProduct = new Product(productID, productName, productPrice);
         productManager.addProduct(type, newProduct, true);
         productsById.put(productID, newProduct);
+
+    } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+            logger.error("Failed to add product: {}", e.getMessage());
+        } catch (Exception e) {
+            System.out.println("An unexpected error occurred while adding the product.");
+            logger.error("Unexpected error in InventoryAdder.addProductMenu", e);
+        }
 
     }
 }
